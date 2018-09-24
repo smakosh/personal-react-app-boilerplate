@@ -27,23 +27,37 @@ export const verifyToken = token => dispatch => {
 		.catch(() => dispatch({ type: 'SAVE_USER', payload: {} }))
 }
 
-export const register = (firstName, lastName, username, email, password) => dispatch => {
+export const register = (payload, setErrors, setSubmitting) => dispatch => {
 	dispatch({ type: 'LOADING_USER' })
-	axios.post(`${URL}/api/user/register`, { firstName, lastName, username, email, password })
+	axios.post(`${URL}/api/user/register`, payload)
 		.then(res => {
 			const { token } = res.data
 			localStorage.setItem('jwtToken', token)
 			setAuthToken(token)
 
 			dispatch({ type: 'SAVE_USER', payload: res.data })
+			setSubmitting(false)
 			history.push('/profile')
 		})
-		.catch(err => dispatch(authFailed(err)))
+		.catch(err => {
+			if (err.response.data.email) {
+				setErrors({ email: err.response.data.email })
+			} else if (err.response.data.email) {
+				setErrors({ email: err.response.data.password })
+			} else if (err.response.data.email && err.response.data.email) {
+				setErrors({
+					email: err.response.data.email,
+					password: err.response.data.password
+				})
+			}
+			setSubmitting(false)
+			dispatch(authFailed(err.response.data))
+		})
 }
 
-export const login = (email, password) => dispatch => {
+export const login = (payload, setErrors, setSubmitting) => dispatch => {
 	dispatch({ type: 'LOADING_USER' })
-	axios.post(`${URL}/api/user/login`, { email, password })
+	axios.post(`${URL}/api/user/login`, payload)
 		.then(res => {
 			const { token } = res.data
 			localStorage.setItem('jwtToken', token)
@@ -52,7 +66,20 @@ export const login = (email, password) => dispatch => {
 			dispatch({ type: 'SAVE_USER', payload: res.data })
 			history.push('/profile')
 		})
-		.catch(err => dispatch(authFailed(err)))
+		.catch(err => {
+			if (err.response.data.email) {
+				setErrors({ email: err.response.data.email })
+			} else if (err.response.data.email) {
+				setErrors({ email: err.response.data.password })
+			} else if (err.response.data.email && err.response.data.email) {
+				setErrors({
+					email: err.response.data.email,
+					password: err.response.data.password
+				})
+			}
+			setSubmitting(false)
+			dispatch(authFailed(err.response.data))
+		})
 }
 
 export const logout = () => dispatch => {

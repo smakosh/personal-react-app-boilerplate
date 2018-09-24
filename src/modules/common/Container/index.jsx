@@ -7,6 +7,11 @@ const Container = styled.div`
     @media (max-width: 980px) {
         width: 90%;
     }
+    ${({ vertical }) => vertical && `
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+    `}
 `
 
 export { Container }

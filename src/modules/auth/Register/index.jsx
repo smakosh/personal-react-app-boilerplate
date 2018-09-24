@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import Spinner from 'react-spinkit'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -8,13 +7,14 @@ import * as Yup from 'yup'
 import { withFormik, Form, Field } from 'formik'
 import { register } from '../actions'
 import { Container, Button, InputField, Error, SEO } from '../../common'
+import { Card, Center } from '../styles'
 
 const Register = ({
 	errors,
 	touched,
 	isSubmitting
 }) => (
-	<Container>
+	<Container vertical>
 		<SEO
 			url="/register"
 			title="Register"
@@ -47,15 +47,6 @@ const Register = ({
 	</Container>
 )
 
-const Card = styled.div`
-    padding: 2rem;
-    border: 1px solid #212121;
-`
-
-const Center = styled.div`
-    text-align: center;
-`
-
 const enhance = compose(
 	connect(null, { register }),
 	withFormik({
@@ -69,10 +60,13 @@ const enhance = compose(
 			email: Yup.string().email('E-mail is not valid!').required(),
 			password: Yup.string().min(6, 'Password has to be longer than 6 characters!').required(),
 		  }),
-		handleSubmit(values, { props }) {
-		  console.log(values)
-		  // props.login(values.email, values.password)
-		},
+		handleSubmit(values, { props, setErrors, setSubmitting }) {
+			const payload = {
+				email: values.email,
+				password: values.password
+			}
+			props.register(payload, setErrors, setSubmitting)
+		}
 	  })
 )
 
