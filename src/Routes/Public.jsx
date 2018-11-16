@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { Route, Redirect } from 'react-router-dom'
 import { branch, renderComponent, compose } from 'recompose'
 import { Loading } from '../modules/common'
+import { GlobalStyle } from './global-styles'
 
 const Public = ({ auth, component: Component, ...rest }) => (
 	<Route
@@ -10,7 +11,10 @@ const Public = ({ auth, component: Component, ...rest }) => (
 		render={props => (auth.isLoggedIn ? (
 			<Redirect to="/profile" />
 		) : (
-			<Component {...props} />
+			<>
+				<GlobalStyle />
+				<Component {...props} />
+			</>
 		))
 		}
 	/>
@@ -23,7 +27,7 @@ const mapStateToProps = ({ auth }) => ({
 const enhance = compose(
 	connect(mapStateToProps),
 	branch(
-		props => props.auth.loading === undefined || props.auth.loading,
+		props => props.auth === undefined,
 		renderComponent(Loading)
 	)
 )

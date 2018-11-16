@@ -5,14 +5,14 @@ import { compose, renderComponent, branch } from 'recompose'
 import { logout } from '../../auth/actions'
 import { Button, Container, Loading, SEO } from '../../common'
 
-const Profile = ({ auth, logout }) => (
+const Profile = ({ user, logout }) => (
 	<Container>
 		<SEO
 			url="/profile"
 			title="Profile"
 			description="Profile"
 		/>
-		<h2>Welcome {`${auth.user.firstName} ${auth.user.lastName}`}</h2>
+		<h2>Welcome {`${user.firstName} ${user.lastName}`}</h2>
 		<Center>
 			<Button onClick={() => logout()}>Logout</Button>
 		</Center>
@@ -24,13 +24,13 @@ const Center = styled.div`
 `
 
 const mapStateToProps = ({ auth }) => ({
-	auth
+	user: auth.user
 })
 
 const enhance = compose(
 	connect(mapStateToProps, { logout }),
 	branch(
-		({ auth }) => !!auth.loading || !auth,
+		({ user }) => user === undefined,
 		renderComponent(Loading)
 	)
 )

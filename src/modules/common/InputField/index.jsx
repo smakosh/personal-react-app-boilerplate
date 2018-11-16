@@ -9,8 +9,8 @@ const InputField = ({ label, children }) => (
 )
 
 const Wrapper = styled.div`
-    padding: 2rem 0;
-    margin-bottom: 1rem;
+    padding: 1rem 0;
+
     input {
         width: 100%;
         margin-top: 1rem;

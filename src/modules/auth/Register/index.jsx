@@ -14,14 +14,26 @@ const Register = ({
 	touched,
 	isSubmitting
 }) => (
-	<Container vertical>
+	<Container>
 		<SEO
 			url="/register"
 			title="Register"
 			description="Register"
 		/>
-		<Card>
+		<Card register>
 			<Form>
+				<InputField label="firstName">
+					<Field type="text" name="firstName" />
+					{errors.firstName && touched.firstName && <Error>{errors.firstName}</Error>}
+				</InputField>
+				<InputField label="lastName">
+					<Field type="text" name="lastName" />
+					{errors.lastName && touched.lastName && <Error>{errors.lastName}</Error>}
+				</InputField>
+				<InputField label="username">
+					<Field type="text" name="username" />
+					{errors.username && touched.username && <Error>{errors.username}</Error>}
+				</InputField>
 				<InputField label="Email">
 					<Field type="email" name="email" />
 					{errors.email && touched.email && <Error>{errors.email}</Error>}
@@ -52,22 +64,24 @@ const enhance = compose(
 	withFormik({
 		mapPropsToValues() {
 		  return {
+				firstName: '',
+				lastName: '',
+				username: '',
 				email: '',
 				password: ''
 		  }
 		},
 		validationSchema: () => Yup.object().shape({
+			firstName: Yup.string().min(2, 'Password has to be longer than 2 characters!').required(),
+			lastName: Yup.string().min(2, 'Password has to be longer than 2 characters!').required(),
+			username: Yup.string().min(2, 'Password has to be longer than 2 characters!').required(),
 			email: Yup.string().email('E-mail is not valid!').required(),
-			password: Yup.string().min(6, 'Password has to be longer than 6 characters!').required(),
-		  }),
-		handleSubmit(values, { props, setErrors, setSubmitting }) {
-			const payload = {
-				email: values.email,
-				password: values.password
-			}
-			props.register(payload, setErrors, setSubmitting)
+			password: Yup.string().min(6, 'Password has to be longer than 6 characters!').required()
+		}),
+		handleSubmit(values, { props: { register }, setErrors, setSubmitting, resetForm }) {
+			register(values, setErrors, setSubmitting, resetForm)
 		}
-	  })
+	})
 )
 
 export default enhance(Register)

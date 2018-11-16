@@ -50,24 +50,22 @@ const Login = ({
 const enhance = compose(
 	connect(null, { login }),
 	withFormik({
-		mapPropsToValues() {
-		  return {
-				email: '',
-				password: ''
-		  }
-		},
+		mapPropsToValues: () => ({
+			email: '',
+			password: ''
+		}),
 		validationSchema: () => Yup.object().shape({
-			email: Yup.string().email('E-mail is not valid!').required(),
-			password: Yup.string().min(6, 'Password has to be longer than 6 characters!').required(),
-		  }),
-		handleSubmit(values, { props, setErrors, setSubmitting }) {
+			email: Yup.string().email('E-mail is invalid!').required(),
+			password: Yup.string().min(6, 'Password has to be longer than 6 characters!').required()
+		}),
+		handleSubmit: (values, { props, setErrors, setSubmitting, resetForm }) => {
 			const payload = {
 				email: values.email,
 				password: values.password
 			}
-			props.login(payload, setErrors, setSubmitting)
+			props.login(payload, setErrors, setSubmitting, resetForm)
 		}
-	  })
+	})
 )
 
 export default enhance(Login)

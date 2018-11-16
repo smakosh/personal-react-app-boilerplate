@@ -5,6 +5,11 @@ export const Card = styled.div`
     border: 1px solid #212121;
     align-self: center;
     width: 90%;
+    margin: 0 auto;
+
+    ${({ register }) => register && `
+        width: 60%;
+    `}
 `
 
 export const Center = styled.div`
