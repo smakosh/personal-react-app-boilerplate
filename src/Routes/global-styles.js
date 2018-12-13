@@ -10,4 +10,10 @@ export const GlobalStyle = createGlobalStyle`
     body {
         font-family: 'Roboto', sans-serif
     }
+
+    button, input, select, textarea {
+        &:focus {
+            outline: none;
+        }
+    }
 `

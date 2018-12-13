@@ -78,7 +78,7 @@ const enhance = compose(
 			email: Yup.string().email('E-mail is not valid!').required(),
 			password: Yup.string().min(6, 'Password has to be longer than 6 characters!').required()
 		}),
-		handleSubmit(values, { props: { register }, setErrors, setSubmitting, resetForm }) {
+		handleSubmit: (values, { props: { register }, setErrors, setSubmitting, resetForm }) => {
 			register(values, setErrors, setSubmitting, resetForm)
 		}
 	})
