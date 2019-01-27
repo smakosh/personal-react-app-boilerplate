@@ -15,26 +15,26 @@ import { NotFound } from './modules/common'
 export const history = createHistory()
 
 try {
-	if (localStorage.jwtToken) {
-		store.dispatch(verifyToken(localStorage.jwtToken))
-	}
+  if (localStorage.jwtToken) {
+    store.dispatch(verifyToken(localStorage.jwtToken))
+  }
 } catch (e) {
-	if (history.location.pathname !== '/') {
-		history.push('/')
-	}
+  if (history.location.pathname !== '/') {
+    history.push('/')
+  }
 }
 
 const AppRoutes = () => (
-	<Provider store={store}>
-		<Router>
-			<Switch>
-				<Public path="/" exact component={Login} />
-				<Public path="/register" exact component={Register} />
-				<Private path="/profile" exact component={Profile} />
-				<Public component={NotFound} />
-			</Switch>
-		</Router>
-	</Provider>
+  <Provider store={store}>
+    <Router>
+      <Switch>
+        <Public path="/" exact component={Login} />
+        <Public path="/register" exact component={Register} />
+        <Private path="/profile" exact component={Profile} />
+        <Public component={NotFound} />
+      </Switch>
+    </Router>
+  </Provider>
 )
 
 export default AppRoutes
